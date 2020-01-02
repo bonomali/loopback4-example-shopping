@@ -176,8 +176,6 @@ export class ShoppingApplication extends BootMixin(
         await userRepo
                 .userCredentials(user.id)
                 .create({password});
-
-        console.log(user)
       }
     }
   }
