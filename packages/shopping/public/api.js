@@ -1,12 +1,16 @@
 const api = {
   addToCart(body, successCb, errCb) {
     const userId = localStorage.getItem('shoppyUserId');
+    const token = localStorage.getItem('shoppyToken');
     const url = apiUrl + `/shoppingCarts/${userId}/items`;
     $.ajax({
       type: 'POST',
       url: url,
       data: JSON.stringify(body),
       contentType: 'application/json',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
       success: successCb,
       error: errCb
     });

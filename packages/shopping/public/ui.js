@@ -1,16 +1,18 @@
 function getCurrentPageNumber() {
-  const temp = location.href.split('?page=');
-  if (temp.length > 1) {
-    return temp[1].split('&')[0];
+  const arr = location.href.split('?');
+  if (arr.length > 1) {
+    const params = new URLSearchParams(arr[1]);
+    return params.get('page');
   } else {
     return 1;
   }
 }
 
 function getProductId() {
-  const temp = location.href.split('?id=');
-  if (temp.length > 1) {
-    return temp[1].split('&')[0];
+  const arr = location.href.split('?');
+  if (arr.length > 1) {
+    const params = new URLSearchParams(arr[1]);
+    return params.get('id');
   }
 }
 
