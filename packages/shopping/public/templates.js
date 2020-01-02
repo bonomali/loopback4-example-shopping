@@ -53,7 +53,7 @@ const navBarTemplate = `
   </div>
 </div>
           <li id="logOut" class="nav-item">
-            <a class="nav-link" href="javascript: logOut()">Log Out</a>
+            <a class="nav-link" href="javascript:logOut()">Log Out</a>
           </li>
           <li id="logIn" class="nav-item">
             <a class="nav-link" href="#" data-toggle="modal" data-target="#logInModal" tabindex="-1">Log In</a>
@@ -105,7 +105,6 @@ const addToCartTemplate = `
         <h5 class="modal-title">$<span id="productPrice"></span></h5>
       </div>
       <div class="modal-body">
-
 <form class="form-inline" style="justify-content: center">
   <label class="my-1 mr-2" for="itemQuantity">Qauntity</label>
   <input type="hidden" id="unformattedPrice">
@@ -118,10 +117,10 @@ const addToCartTemplate = `
     <option value="5">5</option>
   </select>
 </form>
-
       </div>
       <div class="modal-footer" style="justify-content: center">
-        <button type="button" class="btn btn-primary" onclick="addToCartApi()">Add to Cart</button>
+        <button id="removeFromCart" type="button" class="btn btn-primary" onclick="removeFromCartApi()">Remove from Cart</button>
+        <button id="addToCart" type="button" class="btn btn-primary" onclick="addToCartApi()">Add to Cart</button>
       </div>
     </div>
   </div>
