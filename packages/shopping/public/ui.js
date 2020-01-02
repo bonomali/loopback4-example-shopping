@@ -60,7 +60,7 @@ function parseYml(string) {
 function isLoggedIn(cb) {
   const token = localStorage.getItem('shoppyToken');
   if (token) {
-    api.me(token, function(user) {
+    api.me(function(user) {
       cb(user);
     }, function(fail) {
       cb(false);

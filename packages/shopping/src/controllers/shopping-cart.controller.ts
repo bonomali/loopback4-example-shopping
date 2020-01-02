@@ -12,6 +12,13 @@ import {
   HttpErrors,
   post,
 } from '@loopback/rest';
+import {
+  authenticate,
+  TokenService,
+  UserService,
+} from '@loopback/authentication';
+import {UserProfile, securityId, SecurityBindings} from '@loopback/security';
+import {inject} from '@loopback/core';
 import {repository} from '@loopback/repository';
 import {ShoppingCartRepository} from '../repositories';
 import {ShoppingCart, ShoppingCartItem} from '../models';
@@ -23,6 +30,8 @@ const debug = debugFactory('loopback:example:shopping');
  */
 export class ShoppingCartController {
   constructor(
+    @inject(SecurityBindings.USER)
+    public currentUserProfile: UserProfile,
     @repository(ShoppingCartRepository)
     public shoppingCartRepository: ShoppingCartRepository,
   ) {}
@@ -64,18 +73,23 @@ export class ShoppingCartController {
       },
     },
   })
+  @authenticate('jwt')
   async get(
     @param.path.string('userId') userId: string,
   ): Promise<ShoppingCart> {
     debug('Get shopping cart %s', userId);
-    const cart = await this.shoppingCartRepository.get(userId);
-    debug('Shopping cart %s: %j', userId, cart);
-    if (cart == null) {
-      throw new HttpErrors.NotFound(
-        `Shopping cart not found for user: ${userId}`,
-      );
+    if (this.currentUserProfile[securityId] === userId) {
+      const cart = await this.shoppingCartRepository.get(userId);
+      debug('Shopping cart %s: %j', userId, cart);
+      if (cart == null) {
+        throw new HttpErrors.NotFound(
+          `Shopping cart not found for user: ${userId}`,
+        );
+      } else {
+        return cart;
+      }
     } else {
-      return cart;
+      throw HttpErrors(401);
     }
   }
 

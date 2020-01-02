@@ -14,9 +14,18 @@ const api = {
 
   getShoppingCartItems(successCb, errCb) {
     const userId = localStorage.getItem('shoppyUserId');
+    const token = localStorage.getItem('shoppyToken');
     if (userId) {
       const url = apiUrl + '/shoppingCarts/' + userId;
-      $.get(url, successCb);
+      $.ajax({
+        type: 'GET',
+        url: url,
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        success: successCb,
+        error: errCb
+      });
     }
   },
 
@@ -44,8 +53,9 @@ const api = {
     });
   },
 
-  me(token, successCb, errCb) {
+  me(successCb, errCb) {
     const url = apiUrl + '/users/me';
+    const token = localStorage.getItem('shoppyToken');
     $.ajax({
       type: 'GET',
       url: url,
