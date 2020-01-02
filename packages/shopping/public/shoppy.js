@@ -6,7 +6,7 @@ const productTemplate = `
     <h5>$#PRICE#</h5>
     <p class="card-text description">#DESCRIPTION#</p>
     <div class="action-buttons">
-      <a href="javascript: addToCart('#NAME#', '#PRICE#', #UNFORMATTED-PRICE#, '#IMAGE#')" class="btn btn-primary">Add to Cart</a>
+      <a href="javascript: addToCart('#ID#', '#NAME#', '#PRICE#', #UNFORMATTED-PRICE#, '#IMAGE#')" class="btn btn-primary">Add to Cart</a>
       <a href="/product.html?id=#ID#" class="btn btn-primary">Details</a>
     </div>
   </div>

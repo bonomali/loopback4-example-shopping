@@ -10,7 +10,7 @@ const navBarTemplate = `
             <a class="nav-link" href="/shoppy.html">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Shopping Cart</a>
+            <a class="nav-link" href="#">Shopping Cart<span style="display:none" id="itemsInCart" class="badge badge-notify">0</span></a>
           </li>
           <li id="signUp" class="nav-item">
             <a class="nav-link" href="#" data-toggle="modal" data-target="#signUpModal" tabindex="-1">Sign Up</a>
@@ -109,6 +109,7 @@ const addToCartTemplate = `
 <form class="form-inline" style="justify-content: center">
   <label class="my-1 mr-2" for="itemQuantity">Qauntity</label>
   <input type="hidden" id="unformattedPrice">
+  <input type="hidden" id="productId">
   <select class="custom-select my-1 mr-sm-2" id="itemQuantity" onchange="updatePrice(this.value)">
     <option selected value="1">1</option>
     <option value="2">2</option>
@@ -120,7 +121,7 @@ const addToCartTemplate = `
 
       </div>
       <div class="modal-footer" style="justify-content: center">
-        <button type="button" class="btn btn-primary">Add to Cart</button>
+        <button type="button" class="btn btn-primary" onclick="addToCartApi()">Add to Cart</button>
       </div>
     </div>
   </div>

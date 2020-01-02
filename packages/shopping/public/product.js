@@ -12,7 +12,7 @@ const productTemplate = `
             <h5>$#PRICE#</h5>
           </div>
           <div class="col col-3">
-            <a href="javascript: addToCart('#NAME#', '#PRICE#', #UNFORMATTED-PRICE#, '#IMAGE#')" class="btn btn-primary">Add to Cart</a>
+            <a href="javascript: addToCart('#ID#', '#NAME#', '#PRICE#', #UNFORMATTED-PRICE#, '#IMAGE#')" class="btn btn-primary">Add to Cart</a>
           </div>
         </div>
       </div>

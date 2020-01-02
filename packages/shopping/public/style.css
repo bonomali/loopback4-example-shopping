@@ -68,3 +68,12 @@
 #logIn, #logOut {
   display: none;
 }
+
+#itemsInCart {
+  color: #fff;
+  background-color: #dc3545;
+  position:relative;
+  top: -16px;
+  left: -5px;
+  border-radius: 9px;
+}

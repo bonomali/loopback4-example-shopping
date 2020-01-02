@@ -1,7 +1,3 @@
-const apiUrl = 'http://localhost:3000';
-const homePage = apiUrl + '/shoppy.html';
-const itemsPerPage = 4;
-
 function getCurrentPageNumber() {
   const temp = location.href.split('?page=');
   if (temp.length > 1) {
@@ -80,9 +76,21 @@ function refreshLogInStatus() {
       localStorage.setItem('shoppyUserName', user.name);
       localStorage.setItem('shoppyUserId', user.id);
       applyLoggedInUi(user);
+      updateShoppingCartNotification();
     } else {
       applyLoggedOutUi();
     }
+  });
+}
+
+function updateShoppingCartNotification() {
+  api.getShoppingCartItems(function(result) {
+    const items = result.items.length;
+    if (items) {
+      $('#itemsInCart').text(items).show();
+    }
+  }, function(err) {
+    console.log(err);
   });
 }
 
@@ -95,10 +103,13 @@ function applyLoggedInUi(user) {
 function applyLoggedOutUi() {
   $('#logIn, #signUp').show();
   $('#user, #logOut').hide();
+  $('#itemsInCart').hide();
 }
 
 function logOut() {
   localStorage.removeItem('shoppyToken');
+  localStorage.removeItem('shoppyUserId');
+  localStorage.removeItem('shoppyUserName');
   refreshLogInStatus();
 }
 
@@ -136,10 +147,11 @@ function signUp() {
   return false;
 }
 
-function addToCart(name, price, unformattedPrice, image) {
+function addToCart(id, name, price, unformattedPrice, image) {
   isLoggedIn(function(user) {
     if (user) {
       $('#productImage').attr('src', image);
+      $('#productId').val(id);
       $('#productName').text(name);
       $('#productPrice').text(price);
       $('#unformattedPrice').val(unformattedPrice);
@@ -151,6 +163,17 @@ function addToCart(name, price, unformattedPrice, image) {
   });
 }
 
+function addToCartApi() {
+  const productId = $('#productId').val();
+  const quantity = +$('#itemQuantity').val();
+  api.addToCart({productId, quantity}, function() {
+    updateShoppingCartNotification();
+    $('#addToCartModal').modal('toggle');
+  }, function(err) {
+
+  });
+}
+
 function updatePrice(quantity) {
   const unitPrice = $('#unformattedPrice').val();
   const total = unitPrice * quantity;
@@ -158,56 +181,8 @@ function updatePrice(quantity) {
   $('#productPrice').text(formattedPrice);
 }
 
-const api = {
-  signUp(body, successCb, errCb) {
-    const url = apiUrl + '/users';
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: JSON.stringify(body),
-      contentType: 'application/json',
-      success: successCb,
-      error: errCb
-    });
-  },
-
-  logIn(body, successCb, errCb) {
-    const url = apiUrl + '/users/login';
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: JSON.stringify(body),
-      contentType: 'application/json',
-      success: successCb,
-      error: errCb
-    });
-  },
-
-  me(token, successCb, errCb) {
-    const url = apiUrl + '/users/me';
-    $.ajax({
-      type: 'GET',
-      url: url,
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-      success: successCb,
-      error: errCb
-    });
-  },
-
-  getProducts(cb, skip = 0, limit = 4) {
-    const url = apiUrl + `/products?filter[skip]=${skip}&filter[limit]=${limit}`;
-    $.get(url, cb);
-  },
-
-  getProduct(id, cb) {
-    const url = apiUrl + '/products/' + id;
-    $.get(url, cb);
-  }
-}
-
 $(function () {
   $('#navBar').append(navBarTemplate);
   refreshLogInStatus();
+  updateShoppingCartNotification();
 });
