@@ -77,3 +77,14 @@
   left: -5px;
   border-radius: 9px;
 }
+
+.item-in-cart img {
+  border-radius: 3px;
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+}
+
+#itemQuantity {
+  width: 52px;
+}

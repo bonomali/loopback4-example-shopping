@@ -53,13 +53,9 @@ export class ShoppingCartController {
     @param.path.string('userId') userId: string,
     @requestBody({description: 'shopping cart'}) cart: ShoppingCart,
   ): Promise<void> {
-    if (this.currentUserProfile[securityId] === userId) {
+    const currentUserId = this.currentUserProfile[securityId];
+    if (currentUserId === cart.userId && currentUserId === userId) {
       debug('Create shopping cart %s: %j', userId, cart);
-      if (userId !== cart.userId) {
-        throw new HttpErrors.BadRequest(
-          `User id does not match: ${userId} !== ${cart.userId}`,
-        );
-      }
       await this.shoppingCartRepository.set(userId, cart);
     } else {
       throw HttpErrors(401);

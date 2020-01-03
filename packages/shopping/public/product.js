@@ -1,5 +1,5 @@
 const productTemplate = `
-<div class="container">
+<div id="details-#ID#"  class="container">
   <div class="row">
     <div class="col-md">
       <img src="#IMAGE#" class="card-img-top details-img" alt="#NAME#">

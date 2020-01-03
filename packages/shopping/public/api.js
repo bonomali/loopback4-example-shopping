@@ -33,6 +33,25 @@ const api = {
     }
   },
 
+  removeFromCart(items, successCb, errCb) {
+    const userId = localStorage.getItem('shoppyUserId');
+    const token = localStorage.getItem('shoppyToken');
+    const url = apiUrl + `/shoppingCarts/${userId}`;
+    const body = {userId, items};
+    const data = JSON.stringify(body);
+    $.ajax({
+      type: 'PUT',
+      url: url,
+      data,
+      contentType: 'application/json',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      success: successCb,
+      error: errCb
+    });
+  },
+
   signUp(body, successCb, errCb) {
     const url = apiUrl + '/users';
     $.ajax({

@@ -10,7 +10,7 @@ const navBarTemplate = `
             <a class="nav-link" href="/shoppy.html">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Shopping Cart<span style="display:none" id="itemsInCart" class="badge badge-notify">0</span></a>
+            <a class="nav-link" href="javascript:displayShoppingCart()">Shopping Cart<span style="display:none" id="itemsInCart" class="badge badge-notify">0</span></a>
           </li>
           <li id="signUp" class="nav-item">
             <a class="nav-link" href="#" data-toggle="modal" data-target="#signUpModal" tabindex="-1">Sign Up</a>
@@ -125,4 +125,44 @@ const addToCartTemplate = `
     </div>
   </div>
 </div>
+`;
+
+const shoppingCartTemplate = `
+<div class="modal fade" id="shoppingCart" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Shopping Cart</h5>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group">
+
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Delete Items</button>
+        <button type="button" class="btn btn-primary">Update Cart</button>
+        <button type="button" class="btn btn-primary disabled">Checkout</button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+const itemInCart = `
+ <li class="list-group-item d-flex justify-content-between align-items-center item-in-cart">
+  <input type="checkbox" aria-label="Checkbox for following text input">
+  <img src="#IMAGE#" class="card-img-top details-img" alt="#NAME#">
+  <h5 class="card-title">#NAME#</h5>
+  <h6>$#PRICE#</h6>
+
+  <input type="hidden" id="productId">
+  <select class="custom-select my-1 mr-sm-2" id="itemQuantity" onchange="updatePrice(this.value)">
+    <option selected value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+  </select>
+ </li>
 `;

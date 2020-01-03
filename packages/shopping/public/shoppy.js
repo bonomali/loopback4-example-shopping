@@ -1,12 +1,12 @@
 const productTemplate = `
-<div class="card" style="width: 18rem;">
+<div id="card-#ID#" class="card" style="width: 18rem;">
   <img src="#IMAGE#" class="card-img-top product-img" alt="#NAME#">
   <div class="card-body">
     <h4 class="card-title">#NAME#</h4>
     <h5>$#PRICE#</h5>
     <p class="card-text description">#DESCRIPTION#</p>
     <div class="action-buttons">
-      <a id="#ID#" href="javascript:addToCart('#ID#', '#NAME#', '#PRICE#', #UNFORMATTED-PRICE#, '#IMAGE#')" class="btn btn-primary">Add to Cart</a>
+      <a href="javascript:addToCart('#ID#', '#NAME#', '#PRICE#', #UNFORMATTED-PRICE#, '#IMAGE#')" class="btn btn-primary cart-action-button">Add to Cart</a>
       <a href="/product.html?id=#ID#" class="btn btn-primary">Details</a>
     </div>
   </div>

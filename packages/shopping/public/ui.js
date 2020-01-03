@@ -91,7 +91,8 @@ function updateCartDetails() {
     if (itemsCount) {
       $('#itemsInCart').text(itemsCount).show();
       result.items.forEach(item => {
-        $('#' + item.productId).text('Update Cart');
+        $('#card-' + item.productId + ' .cart-action-button').text('Update Cart');
+        $('#details-' + item.productId + ' .btn-primary').text('Update Cart');
       });
     }
   }, function(err) {
@@ -166,6 +167,8 @@ function addToCart(id, name, price, unformattedPrice, image) {
           }
         }
 
+        $('#addToCart').hide();
+        $('#updateCart').hide();
         $('#productImage').attr('src', image);
         $('#productId').val(id);
         $('#productName').text(name);
@@ -175,15 +178,34 @@ function addToCart(id, name, price, unformattedPrice, image) {
         $('#addToCartModal').modal('toggle');
         $('#removeFromCart').addClass('disabled');
 
+        // Product already added to cart
         if (product) {
           $('#itemQuantity').val(product.quantity);
-          $('#addToCart').text('Update Cart');
           $('#removeFromCart').removeClass('disabled');
+        } else {
+          $('#addToCart').show();
         }
       });
     } else {
       $('#logInModal').modal('toggle');
     }
+  });
+}
+
+function removeFromCartApi() {
+  const productId = $('#productId').val();
+  const updatedItems = [];
+  api.getShoppingCartItems(function(result) {
+    result.items.forEach(item => {
+      if (item.productId !== productId) {
+        updatedItems.push(item);
+      }
+    });
+    api.removeFromCart(updatedItems, function() {
+      $('#addToCartModal').modal('toggle');
+        $('#card-' + productId + ' .cart-action-button').text('Add to Cart');
+        $('#details-' + productId + ' .btn-primary').text('Add to Cart');
+    });
   });
 }
 
@@ -198,6 +220,24 @@ function addToCartApi() {
   });
 }
 
+function displayShoppingCart() {
+  api.getShoppingCartItems(function(cart) {
+    const items = cart.items;
+    $('#shoppingCart .list-group').empty();
+    items.forEach(item => {
+      api.getProduct(item.productId, function(product) {
+        const productElement = itemInCart
+                        .replace(/#ID#/g, product.productId)
+                        .replace(/#IMAGE#/g, product.image)
+                        .replace(/#NAME#/g, product.name)
+                        .replace(/#PRICE#/g, product.price);
+        $('#shoppingCart .list-group').append(productElement);
+      });
+    });
+    $('#shoppingCart').modal('toggle');
+  });
+}
+
 function updatePrice(quantity) {
   const unitPrice = $('#unformattedPrice').val();
   const total = unitPrice * quantity;
@@ -207,6 +247,7 @@ function updatePrice(quantity) {
 
 $(function () {
   $('#navBar').append(navBarTemplate);
+  $('body').append(shoppingCartTemplate);
   refreshLogInStatus();
   updateCartDetails();
 });
