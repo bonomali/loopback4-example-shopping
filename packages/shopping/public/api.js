@@ -33,7 +33,7 @@ const api = {
     }
   },
 
-  removeFromCart(items, successCb, errCb) {
+  updateCart(items, successCb, errCb) {
     const userId = localStorage.getItem('shoppyUserId');
     const token = localStorage.getItem('shoppyToken');
     const url = apiUrl + `/shoppingCarts/${userId}`;

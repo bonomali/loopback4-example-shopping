@@ -175,12 +175,14 @@ function addToCart(id, name, price, unformattedPrice, image) {
         $('#productPrice').text(price);
         $('#unformattedPrice').val(unformattedPrice);
         $('#itemQuantity').val(1);
+        document.querySelector('#itemQuantity').dataset.id = id;
         $('#addToCartModal').modal('toggle');
         $('#removeFromCart').addClass('disabled');
 
         // Product already added to cart
         if (product) {
           $('#itemQuantity').val(product.quantity);
+          updatePrice(product.quantity);
           $('#removeFromCart').removeClass('disabled');
         } else {
           $('#addToCart').show();
@@ -201,10 +203,11 @@ function removeFromCartApi() {
         updatedItems.push(item);
       }
     });
-    api.removeFromCart(updatedItems, function() {
+    api.updateCart(updatedItems, function() {
       $('#addToCartModal').modal('toggle');
-        $('#card-' + productId + ' .cart-action-button').text('Add to Cart');
-        $('#details-' + productId + ' .btn-primary').text('Add to Cart');
+      $('#card-' + productId + ' .cart-action-button').text('Add to Cart');
+      $('#details-' + productId + ' .btn-primary').text('Add to Cart');
+      updateCartDetails();
     });
   });
 }
@@ -235,6 +238,19 @@ function displayShoppingCart() {
       });
     });
     $('#shoppingCart').modal('toggle');
+  });
+}
+
+function updateCount(productId, quantity) {
+  api.getShoppingCartItems(function(result) {
+    result.items.forEach(item => {
+      if (item.productId === productId) {
+        item.quantity = +quantity;
+      }
+    });
+    api.updateCart(result.items, function() {
+      updatePrice(quantity);
+    });
   });
 }
 

@@ -109,7 +109,7 @@ const addToCartTemplate = `
   <label class="my-1 mr-2" for="itemQuantity">Qauntity</label>
   <input type="hidden" id="unformattedPrice">
   <input type="hidden" id="productId">
-  <select class="custom-select my-1 mr-sm-2" id="itemQuantity" onchange="updatePrice(this.value)">
+  <select class="custom-select my-1 mr-sm-2" id="itemQuantity" onchange="updateCount(this.dataset.id, this.value)">
     <option selected value="1">1</option>
     <option value="2">2</option>
     <option value="3">3</option>
@@ -157,7 +157,7 @@ const itemInCart = `
   <h6>$#PRICE#</h6>
 
   <input type="hidden" id="productId">
-  <select class="custom-select my-1 mr-sm-2" id="itemQuantity" onchange="updatePrice(this.value)">
+  <select class="custom-select my-1 mr-sm-2" id="itemQuantity" onchange="updateCount(this.value, '#ID#')">
     <option selected value="1">1</option>
     <option value="2">2</option>
     <option value="3">3</option>
