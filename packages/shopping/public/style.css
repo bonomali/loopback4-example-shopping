@@ -85,6 +85,6 @@
   object-fit: cover;
 }
 
-#itemQuantity {
-  width: 52px;
+.product-quantity {
+  width: 52px !important;
 }

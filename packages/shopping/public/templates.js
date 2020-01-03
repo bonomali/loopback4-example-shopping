@@ -119,7 +119,7 @@ const addToCartTemplate = `
 </form>
       </div>
       <div class="modal-footer" style="justify-content: center">
-        <button id="removeFromCart" type="button" class="btn btn-primary" onclick="removeFromCartApi()">Remove from Cart</button>
+        <button id="removeFromCart" type="button" class="btn btn-primary" onclick="removeFromCart(this.dataset.id)">Remove from Cart</button>
         <button id="addToCart" type="button" class="btn btn-primary" onclick="addToCartApi()">Add to Cart</button>
       </div>
     </div>
@@ -139,10 +139,9 @@ const shoppingCartTemplate = `
 
         </ul>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Delete Items</button>
-        <button type="button" class="btn btn-primary">Update Cart</button>
-        <button type="button" class="btn btn-primary disabled">Checkout</button>
+      <div class="modal-footer" style="justify-content: center">
+        <button onclick="removeItems()" type="button" class="btn btn-primary">Remove from Cart</button>
+        <button onclick="checkout()" type="button" class="btn btn-primary disabled">Checkout</button>
       </div>
     </div>
   </div>
@@ -150,14 +149,12 @@ const shoppingCartTemplate = `
 `;
 
 const itemInCart = `
- <li class="list-group-item d-flex justify-content-between align-items-center item-in-cart">
-  <input type="checkbox" aria-label="Checkbox for following text input">
+ <li id="list-#ID#" class="list-group-item d-flex justify-content-between align-items-center item-in-cart">
+  <input type="checkbox" data-id="#ID#">
   <img src="#IMAGE#" class="card-img-top details-img" alt="#NAME#">
   <h5 class="card-title">#NAME#</h5>
   <h6>$#PRICE#</h6>
-
-  <input type="hidden" id="productId">
-  <select class="custom-select my-1 mr-sm-2" id="itemQuantity" onchange="updateCount(this.value, '#ID#')">
+  <select class="custom-select my-1 mr-sm-2 product-quantity" onchange="updateCount('#ID#', this.value)">
     <option selected value="1">1</option>
     <option value="2">2</option>
     <option value="3">3</option>
