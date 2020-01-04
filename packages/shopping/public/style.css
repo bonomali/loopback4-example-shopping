@@ -83,6 +83,11 @@
   width: 42px;
   height: 42px;
   object-fit: cover;
+  margin: 0 15px;
+}
+
+.item-in-cart h6 {
+  margin: 0 15px;
 }
 
 .product-quantity {

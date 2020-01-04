@@ -150,16 +150,22 @@ const shoppingCartTemplate = `
 
 const itemInCart = `
  <li id="list-#ID#" class="list-group-item d-flex justify-content-between align-items-center item-in-cart">
-  <input type="checkbox" data-id="#ID#">
-  <img src="#IMAGE#" class="card-img-top details-img" alt="#NAME#">
-  <h5 class="card-title">#NAME#</h5>
-  <h6>$#PRICE#</h6>
-  <select class="custom-select my-1 mr-sm-2 product-quantity" onchange="updateCount('#ID#', this.value)">
-    <option selected value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-    <option value="4">4</option>
-    <option value="5">5</option>
-  </select>
+
+  <span class="d-flex justify-content-between align-items-center">
+    <input type="checkbox" data-id="#ID#">
+    <img src="#IMAGE#" class="card-img-top details-img" alt="#NAME#">
+    <h5 class="card-title">#NAME#</h5>
+  </span>
+
+  <span class="d-flex justify-content-between align-items-center">
+    <h6>$#PRICE#</h6>
+    <select class="custom-select my-1 mr-sm-2 product-quantity" onchange="updateCount('#ID#', this.value)">
+      <option selected value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+  </span>
  </li>
 `;

@@ -1,19 +1,14 @@
 function getCurrentPageNumber() {
-  const arr = location.href.split('?');
-  if (arr.length > 1) {
-    const params = new URLSearchParams(arr[1]);
-    return params.get('page');
+  const pageNumber = new URL(location.href).searchParams.get('page');
+  if (pageNumber) {
+    return pageNumber;
   } else {
     return 1;
   }
 }
 
 function getProductId() {
-  const arr = location.href.split('?');
-  if (arr.length > 1) {
-    const params = new URLSearchParams(arr[1]);
-    return params.get('id');
-  }
+  return new URL(location.href).searchParams.get('id');
 }
 
 function addPagination() {
@@ -276,6 +271,7 @@ function removeItems() {
   removeFromCart(items);
 }
 
+// Render the initial UI
 $(function () {
   $('#navBar').append(navBarTemplate);
   $('body').append(shoppingCartTemplate);
