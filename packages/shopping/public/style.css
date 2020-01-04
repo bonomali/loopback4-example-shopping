@@ -21,6 +21,10 @@
   object-fit: cover;
 }
 
+#products {
+  justify-content: center;
+}
+
 #products .card {
   max-width: 290px;
 }
