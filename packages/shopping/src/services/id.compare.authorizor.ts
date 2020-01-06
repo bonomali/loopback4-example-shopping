@@ -17,6 +17,7 @@ export async function compareId(
   authorizationCtx: AuthorizationContext,
   metadata: MyAuthorizationMetadata,
 ) {
+  /*
   let currentUser: UserProfile;
   if (authorizationCtx.principals.length > 0) {
     const user = _.pick(authorizationCtx.principals[0], [
@@ -40,4 +41,12 @@ export async function compareId(
   return userId === currentUser[securityId]
     ? AuthorizationDecision.ALLOW
     : AuthorizationDecision.DENY;
+  */
+
+  console.log(authorizationCtx)
+  console.log('===')
+  console.log(metadata)
+
+  return AuthorizationDecision.ALLOW;
+
 }

@@ -17,11 +17,13 @@ import {
   TokenService,
   UserService,
 } from '@loopback/authentication';
+import {authorize} from '@loopback/authorization';
 import {UserProfile, securityId, SecurityBindings} from '@loopback/security';
 import {inject} from '@loopback/core';
 import {repository} from '@loopback/repository';
 import {ShoppingCartRepository} from '../repositories';
 import {ShoppingCart, ShoppingCartItem} from '../models';
+import {compareId} from '../services/id.compare.authorizor';
 import debugFactory from 'debug';
 const debug = debugFactory('loopback:example:shopping');
 
@@ -75,9 +77,11 @@ export class ShoppingCartController {
     },
   })
   @authenticate('jwt')
+  @authorize({resource: 'shoppingCarts', voters: [compareId]})
   async get(
     @param.path.string('userId') userId: string,
   ): Promise<ShoppingCart> {
+    /*
     if (this.currentUserProfile[securityId] === userId) {
       debug('Get shopping cart %s', userId);
       const cart = await this.shoppingCartRepository.get(userId);
@@ -91,6 +95,17 @@ export class ShoppingCartController {
       }
     } else {
       throw HttpErrors(401);
+    }
+    */
+    debug('Get shopping cart %s', userId);
+    const cart = await this.shoppingCartRepository.get(userId);
+    debug('Shopping cart %s: %j', userId, cart);
+    if (cart == null) {
+      throw new HttpErrors.NotFound(
+        `Shopping cart not found for user: ${userId}`,
+      );
+    } else {
+      return cart;
     }
   }
 
