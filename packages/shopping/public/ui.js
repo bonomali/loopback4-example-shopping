@@ -105,6 +105,7 @@ function applyLoggedOutUi() {
   $('#logIn, #signUp').show();
   $('#user, #logOut').hide();
   $('#itemsInCart').hide();
+  $('.cart-action-button').text('Add to Cart');
 }
 
 function logOut() {
@@ -121,7 +122,7 @@ function logIn() {
     const token = res.token;
     localStorage.setItem('shoppyToken', token);
     refreshLogInStatus();
-    $('#logInModal').modal('toggle');
+    $('#logInModal').modal('hide');
   }, function(xhr) {
     $('#logInTitle').text('Invalid credentials');
   });
@@ -135,7 +136,7 @@ function signUp() {
   const password = $('#signUpPassword').val();
   api.signUp({firstName, lastName, email, password}, function(res) {
     api.logIn({email, password}, function(res) {
-      $('#signUpModal').modal('toggle');
+      $('#signUpModal').modal('hide');
       const token = res.token;
       localStorage.setItem('shoppyToken', token);
       refreshLogInStatus();
@@ -172,7 +173,7 @@ function addToCart(id, name, price, unformattedPrice, image) {
         $('#itemQuantity').val(1);
         document.querySelector('#itemQuantity').dataset.id = id;
         document.querySelector('#removeFromCart').dataset.id = id;
-        $('#addToCartModal').modal('toggle');
+        $('#addToCartModal').modal('show');
         $('#removeFromCart').addClass('disabled');
 
         // Product already added to cart
@@ -185,7 +186,7 @@ function addToCart(id, name, price, unformattedPrice, image) {
         }
       });
     } else {
-      $('#logInModal').modal('toggle');
+      $('#logInModal').modal('show');
     }
   });
 }
@@ -195,28 +196,34 @@ function addToCartApi() {
   const quantity = +$('#itemQuantity').val();
   api.addToCart({productId, quantity}, function() {
     updateCartDetails();
-    $('#addToCartModal').modal('toggle');
+    $('#addToCartModal').modal('hide');
   }, function(err) {
 
   });
 }
 
 function displayShoppingCart() {
-  api.getShoppingCartItems(function(cart) {
-    const items = cart.items;
-    $('#shoppingCart .list-group').empty();
-    items.forEach(item => {
-      api.getProduct(item.productId, function(product) {
-        const productElement = itemInCart
-                        .replace(/#ID#/g, product.productId)
-                        .replace(/#IMAGE#/g, product.image)
-                        .replace(/#NAME#/g, product.name)
-                        .replace(/#PRICE#/g, product.price);
-        $('#shoppingCart .list-group').append(productElement);
-        $('#list-' + product.productId + ' select').val(item.quantity);
+  isLoggedIn(function(user) {
+    if (user) {
+      api.getShoppingCartItems(function(cart) {
+        const items = cart.items;
+        $('#shoppingCart .list-group').empty();
+        items.forEach(item => {
+          api.getProduct(item.productId, function(product) {
+            const productElement = itemInCart
+                            .replace(/#ID#/g, product.productId)
+                            .replace(/#IMAGE#/g, product.image)
+                            .replace(/#NAME#/g, product.name)
+                            .replace(/#PRICE#/g, product.price);
+            $('#shoppingCart .list-group').append(productElement);
+            $('#list-' + product.productId + ' select').val(item.quantity);
+          });
+        });
+        $('#shoppingCart').modal('show');
       });
-    });
-    $('#shoppingCart').modal('toggle');
+    } else {
+      $('#logInModal').modal('show');
+    }
   });
 }
 
