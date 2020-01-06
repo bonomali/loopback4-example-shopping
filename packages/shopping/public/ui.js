@@ -89,6 +89,7 @@ function updateCartDetails() {
         $('#card-' + item.productId + ' .cart-action-button').text('Update Cart');
         $('#details-' + item.productId + ' .btn-primary').text('Update Cart');
       });
+      $('#shoppingCartLink').show();
     }
   }, function(err) {
     console.log(err);
@@ -103,7 +104,7 @@ function applyLoggedInUi(user) {
 
 function applyLoggedOutUi() {
   $('#logIn, #signUp').show();
-  $('#user, #logOut').hide();
+  $('#user, #logOut, #shoppingCartLink').hide();
   $('#itemsInCart').hide();
   $('.cart-action-button').text('Add to Cart');
 }
@@ -152,6 +153,7 @@ function signUp() {
 function addToCart(id, name, price, unformattedPrice, image) {
   isLoggedIn(function(user) {
     if (user) {
+      // User has a shopping cart already
       api.getShoppingCartItems(function(cart) {
         const items = cart.items;
         let product;
@@ -164,17 +166,7 @@ function addToCart(id, name, price, unformattedPrice, image) {
         }
 
         $('#addToCart').hide();
-        $('#updateCart').hide();
-        $('#productImage').attr('src', image);
-        $('#productId').val(id);
-        $('#productName').text(name);
-        $('#productPrice').text(price);
-        $('#unformattedPrice').val(unformattedPrice);
-        $('#itemQuantity').val(1);
-        document.querySelector('#itemQuantity').dataset.id = id;
-        document.querySelector('#removeFromCart').dataset.id = id;
-        $('#addToCartModal').modal('show');
-        $('#removeFromCart').addClass('disabled');
+        updateAddToCartUi(id, name, price, unformattedPrice, image);
 
         // Product already added to cart
         if (product) {
@@ -184,11 +176,29 @@ function addToCart(id, name, price, unformattedPrice, image) {
         } else {
           $('#addToCart').show();
         }
+      // No shopping cart yet
+      }, function () {
+        $('#addToCart').show();
+        updateAddToCartUi(id, name, price, unformattedPrice, image);
+        $('#addToCartModal').modal('show');
       });
     } else {
       $('#logInModal').modal('show');
     }
   });
+}
+
+function updateAddToCartUi(id, name, price, unformattedPrice, image) {
+  $('#productImage').attr('src', image);
+  $('#productId').val(id);
+  $('#productName').text(name);
+  $('#productPrice').text(price);
+  $('#unformattedPrice').val(unformattedPrice);
+  $('#itemQuantity').val(1);
+  document.querySelector('#itemQuantity').dataset.id = id;
+  document.querySelector('#removeFromCart').dataset.id = id;
+  $('#addToCartModal').modal('show');
+  $('#removeFromCart').addClass('disabled');
 }
 
 function addToCartApi() {
@@ -248,6 +258,8 @@ function updatePrice(quantity) {
 }
 
 function removeFromCart(items) {
+  if ($('#removeFromCart').hasClass('disabled')) return;
+
   if (!Array.isArray(items)) items = [items];
   const updatedItems = [];
   api.getShoppingCartItems(function(result) {

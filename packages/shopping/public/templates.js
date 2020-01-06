@@ -9,7 +9,7 @@ const navBarTemplate = `
           <li class="nav-item active">
             <a class="nav-link" href="/shoppy.html">Home <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" id="shoppingCartLink" style="display:none">
             <a class="nav-link" href="javascript:displayShoppingCart()">Shopping Cart<span style="display:none" id="itemsInCart" class="badge badge-notify">0</span></a>
           </li>
           <li id="signUp" class="nav-item">
